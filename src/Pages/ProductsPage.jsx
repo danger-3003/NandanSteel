@@ -1,8 +1,9 @@
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import { useLocation } from "react-router-dom";
 import Roofs from "../assets/Products/Image2.png"
 import Swiper from "../Components/Swiper"
 import AOS from "aos"
+import axios from "axios"
 import "aos/dist/aos.css"
 import DotPattern from "../assets/About/DotGrid.svg"
 import LinePattern from "../assets/About/LinePattern.svg"
@@ -13,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function ProductsPage() {
     const productPage=useRef(null);
     const location=useLocation();
+    const [productDetails, setProductDetails]=useState(null);
 
     useEffect(()=>{
         AOS.init({duration:1000});
@@ -24,6 +26,11 @@ function ProductsPage() {
             productPage.current.scrollIntoView({behavior:"smooth"})
         }
     },[location]);
+    useEffect(()=>{
+        axios.get("https://api.cosmicjs.com/v3/buckets/nanddhan-steel-production/objects?pretty=true&query=%7B%22type%22:%22products%22%7D&limit=10&skip=0&read_key=CflLIS30RCirUt744kUC5wCkjEzLDuZFcg85LvbVqAYyMs2jJV&depth=1&props=slug,title,metadata,type")
+        .then((res)=>{setProductDetails(res.data.objects)})
+        .catch(err=>{console.log(err)});
+    })
 
     return (
         <div ref={productPage} className="flex overflow-hidden items-center justify-center flex-col font-[poppins] pt-20">
@@ -38,48 +45,38 @@ function ProductsPage() {
                     <img src={DotPattern} alt="DotGrid" className="absolute" />
                 </div>
                 <div className="flex items-start justify-center flex-col gap-2">
-                    <div data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">1</p></div>
-                        <div><p>Colour Coated Metal Roofing Sheets</p></div>
-                    </div>
-                    <div data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">2</p></div>
-                        <div><p>Fastners</p></div>
-                    </div>
-                    <div data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">3</p></div>
-                        <div><p>Metal Deck Sheet</p></div>
-                    </div>
-                    <div data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">4</p></div>
-                        <div><p>Ventilators - Turbo - Ridge</p></div>
-                    </div>
-                    <div data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">5</p></div>
-                        <div><p>Trussels Span</p></div>
-                    </div>
+                    {
+                        productDetails && productDetails.map((product, index)=>{
+                            return(
+                                <>
+                                    {
+                                        productDetails.length/2>index &&
+                                        <div key={index} data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
+                                            <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">{index+1}</p></div>
+                                            <div><p>{product.title}</p></div>
+                                        </div>
+                                    }
+                                </>
+                            )
+                        })
+                    }
                 </div>
                 <div className="flex items-start justify-center flex-col gap-2">
-                    <div data-aos="fade-left" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">6</p></div>
-                        <div><p>C & Z Purlins</p></div>
-                    </div>
-                    <div data-aos="fade-left" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">7</p></div>
-                        <div><p>Shylites - Polycarbonate / FRP Sheets</p></div>
-                    </div>
-                    <div data-aos="fade-left" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">8</p></div>
-                        <div><p>Sandwich / Puf Panel</p></div>
-                    </div>
-                    <div data-aos="fade-left" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">9</p></div>
-                        <div><p>Pre-Engineered Buildings</p></div>
-                    </div>
-                    <div data-aos="fade-left" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
-                        <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">10</p></div>
-                        <div><p>UPVC Sheets</p></div>
-                    </div>
+                    {
+                        productDetails && productDetails.map((product, index)=>{
+                            return(
+                                <>
+                                    {
+                                        !(productDetails.length/2>index) &&
+                                        <div key={index} data-aos="fade-right" className="flex items-center justify-start bg-[#1e4b8c] p-1 rounded-3xl text-white gap-3 w-full">
+                                            <div className="flex items-center justify-center w-10 h-10 bg-[#cc2020] rounded-3xl font-semibold text-[#fff]"><p className="w-10 text-center">{index+1}</p></div>
+                                            <div><p>{product.title}</p></div>
+                                        </div>
+                                    }
+                                </>
+                            )
+                        })
+                    }
                 </div>
             </div>
             <div data-aos="fade" className="pb-10 flex items-center justify-center">
