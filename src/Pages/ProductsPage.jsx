@@ -30,7 +30,7 @@ function ProductsPage() {
         axios.get("https://api.cosmicjs.com/v3/buckets/nanddhan-steel-production/objects?pretty=true&query=%7B%22type%22:%22products%22%7D&limit=10&skip=0&read_key=CflLIS30RCirUt744kUC5wCkjEzLDuZFcg85LvbVqAYyMs2jJV&depth=1&props=slug,title,metadata,type")
         .then((res)=>{setProductDetails(res.data.objects)})
         .catch(err=>{console.log(err)});
-    })
+    },[])
 
     return (
         <div ref={productPage} className="flex overflow-hidden items-center justify-center flex-col font-[poppins] pt-20">
